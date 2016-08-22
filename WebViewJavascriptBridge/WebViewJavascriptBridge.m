@@ -20,7 +20,7 @@
     long _uniqueId;
     WebViewJavascriptBridgeBase *_base;
 #if defined WVJB_PLATFORM_IOS
-    NSUInteger _numRequestsLoading;
+    NSInteger _numRequestsLoading;
 #endif
     
 }
@@ -190,6 +190,10 @@
     if (webView != _webView) { return; }
     
     _numRequestsLoading--;
+    
+    if(_numRequestsLoading < 0) {
+        _numRequestsLoading = 0;
+    }
     
     if (_numRequestsLoading == 0 && ![[webView stringByEvaluatingJavaScriptFromString:[_base webViewJavascriptCheckCommand]] isEqualToString:@"true"]) {
         [_base injectJavascriptFile:YES];
